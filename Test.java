@@ -7,7 +7,7 @@ public class Test extends JFrame
 	public Test()
 	{
 		Image imgFond = Toolkit.getDefaultToolkit().getImage("Ressource\\fond4.png");
-		this.add(new BackgroundPanel(imgFond));
+		//this.add(new BackgroundPanel(imgFond));
 		this.setSize(1000,500);
 		this.setVisible(true);
 	}

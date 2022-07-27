@@ -1,8 +1,7 @@
 public class Cyberdemineur
 {
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
-		new Metier();
-		new Ihm();
+		new Ihm(new Metier(2));
 	}
 }

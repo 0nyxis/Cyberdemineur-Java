@@ -1,13 +1,24 @@
 public class Metier 
 {
 	Grille grilleConsole;
-	Case[] grilleIHM;
 
-	public Metier()
+	int[] diffFacile    = {9 ,9 ,10};
+	int[] diffNormal    = {12,12,25};
+	int[] diffDifficile = {24,12,80};
+	int[] diffChoisis;
+
+	public Metier(int difficulte)
 	{
-		this.grilleConsole=new Grille(9,20,10);
+		switch (difficulte)
+		{
+			case 0 -> this.diffChoisis = this.diffFacile   ;
+			case 1 -> this.diffChoisis = this.diffNormal   ;
+			case 2 -> this.diffChoisis = this.diffDifficile;
+		}
 
-		System.out.println(this.grilleConsole.toString());
+		this.grilleConsole=new Grille(this.diffChoisis[0],this.diffChoisis[1],this.diffChoisis[2]);
+		System.out.println(this.grilleConsole);
+
 	}
 
 }

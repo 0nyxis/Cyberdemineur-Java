@@ -1,4 +1,4 @@
-import javax.swing.*;
+/*import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -44,4 +44,4 @@ public class BackgroundImage implements ActionListener
     System.out.println("ça marche !");
   }
 
-}
+}*/
