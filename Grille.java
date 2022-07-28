@@ -179,6 +179,11 @@ public class Grille
 
 		return resultat;
 	}
+
+	public int getValeurCase(int ligne, int colonne)
+	{
+		return this.grille[ligne][colonne][0];
+	}
 	
 
 
