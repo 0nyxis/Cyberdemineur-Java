@@ -42,83 +42,74 @@ public class Case extends JButton
 		Grille grilleConsole = this.met.getGrilleConsole();
 		if(this.etat!=DRAPEAU)
 		{
-			switch (grilleConsole.getValeurCase(this.getColonne(), this.getLigne())) {
-				case 0 -> {
-					System.out.println("Case ouverte : " + (this.getLigne()) + "|" + (this.getColonne()));
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_vide.png"))));
-					this.etat = OUVERT;
-					System.out.println("Case à ouvrir : " + (this.getLigne() - 1) + "|" + (this.getColonne() - 1));
-					for (int i = 0; i < 3; i++) {
-						for (int j = 0; j < 3; j++) {
-							if (this.getLigne() + i - 1 >= 0 && this.getColonne() + j - 1 >= 0
-									&& this.getLigne() + i - 1 < this.met.diffChoisis[1]
-									&& this.getColonne() + j - 1 < this.met.diffChoisis[0])
-								this.cd.ihm.clic(this.getLigne() + i - 1, this.getColonne() + j - 1);
-						}
+			int valeurCase = grilleConsole.getValeurCase(this.getColonne(), this.getLigne());
+			if(valeurCase==0) {
+				this.setEnabled(false);
+				this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_vide.png"))));
+				this.etat = OUVERT;
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 3; j++) {
+						if (this.getLigne() + i - 1 >= 0 && this.getColonne() + j - 1 >= 0
+								&& this.getLigne() + i - 1 < this.met.diffChoisis[1]
+								&& this.getColonne() + j - 1 < this.met.diffChoisis[0])
+							this.cd.ihm.clic(this.getLigne() + i - 1, this.getColonne() + j - 1);
 					}
 				}
-				case 1 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case1.png"))));
-					this.etat = OUVERT;
-				}
-				case 2 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case2.png"))));
-					this.etat = OUVERT;
-				}
-				case 3 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case3.png"))));
-					this.etat = OUVERT;
-				}
-				case 4 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case4.png"))));
-					this.etat = OUVERT;
-				}
-				case 5 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case5.png"))));
-					this.etat = OUVERT;
-				}
-				case 6 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case6.png"))));
-					this.etat = OUVERT;
-				}
-				case 7 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case7.png"))));
-					this.etat = OUVERT;
-				}
-				case 8 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case8.png"))));
-					this.etat = OUVERT;
-				}
-				case 9 -> {
-					this.setEnabled(false);
-					this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_bombe.png"))));
-					this.etat = OUVERT;
-				}
-				default -> System.out.println("Erreur");
+				this.met.verifierFin();
+				return;
 			}
+			this.setEnabled(false);
+			if (valeurCase==9)
+			{
+				this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_bombe.png"))));
+				this.met.ajouterBombeTrouvee();
+			}
+			else {
+				this.setDisabledIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case" +valeurCase+".png"))));
+			}
+			this.etat = OUVERT;
+			this.met.verifierFin();
+			return;
 		}
 	}
 
 	public void majDrapeau()		// Permet d'ajouter un drapeau en faisant un clic droit
 	{
+		int valeurCase=this.met.getGrilleConsole().getValeurCase(this.getColonne(), this.getLigne());
 		if (this.etat ==DRAPEAU)		// S'il s'agit déjà d'un drapeau, remet la case en état "voilé"
 		{
-			this.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_cachee.png" ))));
-			this.etat=PAS_OUVERT;
+			if (valeurCase==9)
+			{
+				this.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_cachee.png" ))));
+				this.etat=PAS_OUVERT;
+				this.met.retirerBombeTrouvee();
+				this.met.verifierFin();
+			}
+			else
+			{
+				this.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_cachee.png" ))));
+				this.etat=PAS_OUVERT;
+				this.met.retirerBombePosee();
+				this.met.verifierFin();
+			}
 		}
 		else
 		{
-			this.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_drapeau.png"))));
-			this.etat=DRAPEAU;
+			if (valeurCase==9)
+			{
+				this.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_drapeau.png"))));
+				this.etat=DRAPEAU;
+				this.met.ajouterBombeTrouvee();
+				this.met.verifierFin();
+			}
+			else
+			{
+				this.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("Ressource\\case_drapeau.png"))));
+				this.etat=DRAPEAU;
+				this.met.ajouterBombePosee();
+				this.met.verifierFin();
+
+			}
 		}
 	}
 }

@@ -4,7 +4,7 @@ public class Cyberdemineur
 	Ihm ihm;
 	public Cyberdemineur()
 	{
-		this.metier=new Metier(2);
+		this.metier=new Metier(this,0);
 		this.ihm=new Ihm (this);
 	}
 	public static void main(String[] args)

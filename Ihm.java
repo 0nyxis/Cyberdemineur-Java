@@ -71,7 +71,6 @@ public class Ihm extends JFrame implements ActionListener
 
 	public void clic(int ligne, int colonne)
 	{
-		System.out.println(ligne + "|" + colonne);
 		if (this.grilleIHM[ligne*this.metier.diffChoisis[0]+colonne].getEtat()==Case.PAS_OUVERT)
 			this.grilleIHM[ligne*this.metier.diffChoisis[0]+colonne].doClick();
 	}
