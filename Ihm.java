@@ -1,12 +1,19 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
 public class Ihm extends JFrame implements ActionListener
 {
+	public static final int DELAI_CHRONO = 1000;
 	Case[] grilleIHM;
 	JPanel grilleCase;
+	JPanel enJeu, uiInfo;
 	Metier metier;
+	BorderLayout bdl;
+	JLabel  lblViesRestantes, lblBombesRestantes, lblTemps;
+	Timer chrono;
+	int tempsEcoule;
 
 	public Ihm(Cyberdemineur cd)
 	{
@@ -18,6 +25,8 @@ public class Ihm extends JFrame implements ActionListener
 		this.setSize(1000,500);
 		this.setLayout(new BorderLayout());
 
+		this.enJeu = new JPanel();
+		this.enJeu.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création d'un Mouse Listener
@@ -35,6 +44,7 @@ public class Ihm extends JFrame implements ActionListener
 			public void mouseEntered  (MouseEvent e) {   }
 			public void mouseExited   (MouseEvent e) {   }
 		};
+
 		// Ajout du panel qui affiche les boutons du jeu : les cases
 
 		this.grilleCase = new JPanel();
@@ -59,19 +69,72 @@ public class Ihm extends JFrame implements ActionListener
 				this.grilleIHM[i*this.metier.diffChoisis[0]+j].addMouseListener(ml);
 			}
 		}
-		this.add(this.grilleCase, BorderLayout.CENTER);
+
+		/*/////////////////////////////////////////////////////////////////////////////////////////////
+		//Ajout du panel qui affiche le temps passé, le nombre de vie restante et le nombre de bombes//
+		/////////////////////////////////////////////////////////////////////////////////////////////*/
+
+		this.uiInfo = new JPanel();
+		this.bdl = new BorderLayout();
+		this.bdl.setHgap(10);
+		this.uiInfo.setLayout(this.bdl);
+
+		//Ajout de la vie
+		this.lblViesRestantes = new JLabel ("Vies restantes : "+this.metier.vieRestante, JLabel.LEFT);
+
+		//Ajout du nombre de bombes restantes
+		this.lblBombesRestantes = new JLabel ( "Bombes à trouver : " + (this.metier.diffChoisis[2]-this.metier.bombePosee),JLabel.RIGHT);
+
+		//Ajout du timer
+		this.tempsEcoule=0;
+		this.lblTemps = new JLabel("Temps écoulé : " + this.tempsEcoule, JLabel.CENTER);
+		this.chrono = new Timer(DELAI_CHRONO,this);
+
+		//Ajout au panel ui
+		this.uiInfo.add(this.lblViesRestantes  , BorderLayout.WEST);
+		this.uiInfo.add(this.lblTemps          , BorderLayout.CENTER);
+		this.uiInfo.add(this.lblBombesRestantes, BorderLayout.EAST);
+
+		///////////////////////////////////////////////
+		/* Ajout au panel général, puis dans la frame//
+		/////////////////////////////////////////////*/
+
+		this.enJeu.add(this.grilleCase, BorderLayout.CENTER);
+		this.enJeu.add(this.uiInfo, BorderLayout.NORTH);
+
+		this.add(this.enJeu);
+
 		this.pack();
 		this.setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e)
 	{
-		((Case)e.getSource()).majImage();
+		if (e.getSource() instanceof Case)
+			((Case)e.getSource()).majImage();
+		if (e.getSource() == this.chrono)
+		{
+			this.tempsEcoule++;
+			this.majIHM();
+		}
+
 	}
 
 	public void clic(int ligne, int colonne)
 	{
 		if (this.grilleIHM[ligne*this.metier.diffChoisis[0]+colonne].getEtat()==Case.PAS_OUVERT)
 			this.grilleIHM[ligne*this.metier.diffChoisis[0]+colonne].doClick();
+	}
+
+	public void majIHM()
+	{
+		this.lblViesRestantes.setText("Vies restantes : " + this.metier.vieRestante);
+		this.lblBombesRestantes.setText( "Bombes à trouver : " + (this.metier.diffChoisis[2]-this.metier.bombePosee));
+		this.lblTemps.setText("Temps écoulé : " + this.tempsEcoule);
+	}
+
+	public void startChrono()
+	{
+		this.chrono.start();
 	}
 }
