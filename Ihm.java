@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -23,6 +22,7 @@ public class Ihm extends JFrame implements ActionListener
 
 		this.setTitle("Cyberdémineur");
 		this.setSize(1000,500);
+		this.setLocation(500,100);
 		this.setLayout(new BorderLayout());
 
 		this.enJeu = new JPanel();
@@ -100,7 +100,7 @@ public class Ihm extends JFrame implements ActionListener
 		/////////////////////////////////////////////*/
 
 		this.enJeu.add(this.grilleCase, BorderLayout.CENTER);
-		this.enJeu.add(this.uiInfo, BorderLayout.NORTH);
+		this.enJeu.add(this.uiInfo, BorderLayout.SOUTH);
 
 		this.add(this.enJeu);
 

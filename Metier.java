@@ -75,6 +75,7 @@ public class Metier
 		if (this.bombeTrouvee==this.diffChoisis[2])
 		{
 			this.cd.ihm.dispose();
+			new WinScreen();
 			System.out.println("Gagné");
 		}
 		if (this.vieRestante==0)

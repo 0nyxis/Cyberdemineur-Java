@@ -7,10 +7,13 @@ public class Case extends JButton
 	public static final int PAS_OUVERT = 0;
 	public static final int OUVERT     = 1;
 	public static final int DRAPEAU    = 2;
+
 	private Metier met;
 	private Cyberdemineur cd;
+
 	private final int lig;
 	private final int col;
+
 	private int etat;
 
 	public Case(Cyberdemineur cd, int ligne, int colonne)
@@ -43,7 +46,7 @@ public class Case extends JButton
 			{
 				Grille grilleConsole = this.met.getGrilleConsole();
 				int valeurCase = grilleConsole.getValeurCase(this.getColonne(), this.getLigne());
-				if (valeurCase == 9)
+				if (valeurCase != 0)
 				{
 					this.met.recreerGrille(this.cd,this.met.diffChoisis);
 					this.majImage();
